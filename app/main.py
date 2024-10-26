@@ -12,7 +12,7 @@ from app.serialize_strategy import (
 
 
 class Book:
-    def __init__(self, title: str, content: str):
+    def __init__(self, title: str, content: str) -> None:
         self.title = title
         self.content = content
 
@@ -29,8 +29,10 @@ class Book:
 def get_display_strategy(action_type: str) -> DisplayStrategy:
     return ConsoleDisplay() if action_type == "console" else ReverseDisplay()
 
+
 def get_print_strategy(action_type: str) -> PrintStrategy:
     return ConsolePrint() if action_type == "console" else ReversePrint()
+
 
 def get_serialize_strategy(action_type: str) -> SerializeStrategy:
     return JsonSerializer() if action_type == "json" else XmlSerializer()

@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 
+
 class PrintStrategy(ABC):
     @abstractmethod
     def print_book(self, title: str, content: str) -> None:
