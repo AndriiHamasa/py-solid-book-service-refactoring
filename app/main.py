@@ -26,29 +26,23 @@ class Book:
         return strategy.serialize(self.title, self.content)
 
 
-def get_display_strategy(action_type: str) -> DisplayStrategy:
-    return ConsoleDisplay() if action_type == "console" else ReverseDisplay()
-
-
-def get_print_strategy(action_type: str) -> PrintStrategy:
-    return ConsolePrint() if action_type == "console" else ReversePrint()
-
-
-def get_serialize_strategy(action_type: str) -> SerializeStrategy:
-    return JsonSerializer() if action_type == "json" else XmlSerializer()
-
-
 def main(book: Book, commands: list[tuple[str, str]]) -> None | str:
     output = ""
 
     for action, action_type in commands:
         if action == "display":
-            book.perform_display(get_display_strategy(action_type))
+            book.perform_display(
+                ConsoleDisplay() if action_type == "console"
+                else ReverseDisplay()
+            )
         elif action == "print":
-            book.perform_print(get_print_strategy(action_type))
+            book.perform_print(
+                ConsolePrint() if action_type == "console" else ReversePrint()
+            )
         elif action == "serialize":
             output = book.perform_serialize(
-                get_serialize_strategy(action_type))
+                JsonSerializer() if action_type == "json" else XmlSerializer()
+            )
 
     return output
 
