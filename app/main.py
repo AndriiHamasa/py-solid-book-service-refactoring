@@ -1,14 +1,6 @@
-from app.display_strategy import (
-    DisplayStrategy,
-    ConsoleDisplay,
-    ReverseDisplay,
-)
-from app.print_strategy import PrintStrategy, ReversePrint, ConsolePrint
-from app.serialize_strategy import (
-    SerializeStrategy,
-    JsonSerializer,
-    XmlSerializer,
-)
+from app.display_strategy import ConsoleDisplay, ReverseDisplay
+from app.print_strategy import ReversePrint, ConsolePrint
+from app.serialize_strategy import JsonSerializer, XmlSerializer
 
 
 class Book:
@@ -16,33 +8,31 @@ class Book:
         self.title = title
         self.content = content
 
-    def perform_display(self, strategy: DisplayStrategy) -> None:
-        strategy.display(self.content)
-
-    def perform_print(self, strategy: PrintStrategy) -> None:
-        strategy.print_book(self.title, self.content)
-
-    def perform_serialize(self, strategy: SerializeStrategy) -> str:
-        return strategy.serialize(self.title, self.content)
-
 
 def main(book: Book, commands: list[tuple[str, str]]) -> None | str:
     output = ""
 
     for action, action_type in commands:
         if action == "display":
-            book.perform_display(
-                ConsoleDisplay() if action_type == "console"
-                else ReverseDisplay()
-            )
+
+            if action_type == "console":
+                ConsoleDisplay().display(book.content)
+            else:
+                ReverseDisplay().display(book.content)
+
         elif action == "print":
-            book.perform_print(
-                ConsolePrint() if action_type == "console" else ReversePrint()
-            )
+
+            if action_type == "console":
+                ConsolePrint().print_book(book. title, book.content)
+            else:
+                ReversePrint().print_book(book.title, book.content)
+
         elif action == "serialize":
-            output = book.perform_serialize(
-                JsonSerializer() if action_type == "json" else XmlSerializer()
-            )
+
+            if action_type == "json":
+                output = JsonSerializer().serialize(book. title, book.content)
+            else:
+                output = XmlSerializer().serialize(book.title, book.content)
 
     return output
 
